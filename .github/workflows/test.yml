@@ -1,32 +1,32 @@
 name: Test
-  on:
-    pull_request:
-      types:
-        - opened
-        - synchronize
-  jobs:
-    merge:
-      runs-on: ubuntu-latest
-      env:
-        REPO: https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git
-      steps:
-        - uses: actions/checkout@v2
-          with:
-            ref: ${{github.event.pull_request.head.ref}}
-        - run: date >> README.md
-        - name: commit manifests and push
-          run: |
-            git config --global user.email "workflow@example.com"
-            git config --global user.name "workflow user"
-            git add .
-            git commit -m 'modify README' && git push ${REPO} HEAD:${{github.event.pull_request.head.ref}} || true
-        - name: merge pull request
-          uses: actions/github-script@0.4.0
-          with:
-            github-token: ${{secrets.GITHUB_TOKEN}}
-            script: |
-              github.pulls.merge({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: context.payload.pull_request.number
-              })
+on: 
+  pull_request:
+    types:
+      - opened
+      - synchronize
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    env:
+      REPO: https://${{github.actor}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}.git
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{github.event.pull_request.head.ref}}
+      - run: date >> README.md
+      - name: commit manifests and push
+        run: |
+          git config --global user.email "workflow@example.com"
+          git config --global user.name "workflow user"
+          git add .
+          git commit -m 'modify README' && git push ${REPO} HEAD:${{github.event.pull_request.head.ref}} || true
+      - name: merge pull request
+        uses: actions/github-script@0.4.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.pulls.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            })
