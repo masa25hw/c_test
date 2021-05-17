@@ -1,6 +1,6 @@
 name: C/C++ CI
 # cf. https://github.com/actions/starter-workflows/issues/53
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build-ubuntu:
