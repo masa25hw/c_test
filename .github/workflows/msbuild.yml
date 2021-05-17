@@ -1,0 +1,15 @@
+name: MSBuild
+on: push
+jobs:
+  build:
+    name: MSBuild
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Setup MSBuild.exe
+      uses: warrenbuckley/Setup-MSBuild@v1
+
+    - name: MSBuild
+      run: msbuild msbuild_actions_sample.sln
+      shell: cmd
