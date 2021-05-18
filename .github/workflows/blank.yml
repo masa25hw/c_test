@@ -34,3 +34,9 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+      
+      # Display tree-like format
+      - name: Display tree
+        run: |
+          cd /
+          tree -d
