@@ -38,5 +38,6 @@ jobs:
       # Display tree-like format
       - name: Display tree
         run: |
-          cd /
-          tree -d
+          getconf LONG_BIT
+          cd /usr
+          tree -d -L 5
