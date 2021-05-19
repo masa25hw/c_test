@@ -121,9 +121,25 @@ jobs:
 ```
 
 ## 参考
+**gcc**
 - [Github Actions上のDockerコンテナ上のGCCの最新版でテストを走らせたかった](https://onihusube.hatenablog.com/entry/2020/07/24/024223)
+- [CMakeの使い方（その１）](https://qiita.com/shohirose/items/45fb49c6b429e8b204ac)
+- [CMakeの使い方（その２）](https://qiita.com/shohirose/items/637f4b712893764a7ec1)
+
+**CMake**
 - [勝手に作るCMake入門 その1 基本的な使い方](https://kamino.hatenablog.com/entry/cmake_tutorial1)
 
+**make**
+- 実は make には色々種類がある. 主なものをあげると以下の通り
+    - Microsoft nmake (Windows)
+    - Borland make (Windows)
+    - GNU make (windows, UNIX 系)
+    - Solaris make (Solaris)
+- makefileの中ではshの書式が有効
+
+- [make Makefileで階層（サブディレクトリ）を走破しながら依存を解決してコンパイルする](https://giraffydev.hatenablog.com/entry/2016/10/04/101004)
+- [シンプルで応用の効くmakefileとその解説](http://urin.github.io/posts/2013/simple-makefile-for-clang)
+- [Makefileの書き方メモ](https://qiita.com/nullpo24/items/716bad137f1264b776f5)
 ## CMake
 - CMakeは、C, C++, CUDA, Fortran, assemblerなどのプロジェクトのビルドをコンパイラに依存せず自動化するためのツール
 - 本来、プログラミング言語の仕様は標準ライブラリとコンパイラの実装に依存するので、開発環境が違えば異なるソースコードを書く必要がある
@@ -144,3 +160,14 @@ jobs:
 
 という2ステップで、プロジェクトをビルドできるようになる。
 
+```
+project
+├── Makefile.am
+└── src
+       ├── Makefile.am
+       ├── main.c
+       └── lib
+              ├── Makefile.am
+              ├── lib_test.h
+              └── lib_test.c
+```
