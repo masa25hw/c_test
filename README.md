@@ -180,3 +180,108 @@ project
               ├── lib_test.h
               └── lib_test.c
 ```
+
+
+## `git ignore`設定
+### 実現したいこと
+- 個人用で作成したスクリプトやメモなど、個人の開発環境に依存したファイルを管理しないために、`.gitignore`を個別に配置するケースを想定
+- 個人依存のファイルを管理しない、かつ個々人で異なる`.gitignore`ファイル自体も管理対象としたくない
+
+### 実現手法
+下記構成でトライしたところ、上記ケースを作り出せたので、この方法を採用
+
+#### プロジェクト構成
+```
+root
+│  .gitignore
+│  CMakeLists.txt
+│  main.cpp
+│  README.md
+│
+├─.github
+│  └─workflows
+│          blank.yml
+│          test.yml
+│
+└─src
+    │  .gitignore
+    │  main.c
+    │  test1.txt <- 無視したい
+    │  test2.txt <- 無視したい
+    │
+    └─lib
+            lib_test.c
+            lib_test.h
+```
+
+#### 各階層に配置した`.gitignore`ファイル
+/root/.gitignore
+
+```git
+# gitiginore
+/**/.gitignore
+```
+
+/root/src/.gitignore
+
+```git
+# Personal settings
+test*.txt
+```
+
+#### テスト結果
+##### `/root/.gitignore`に`/**/.gitignore`を記述しなかった場合
+ユーザー独自の設定を記述した`/root/src/.gitignore`はgit管理対象となる
+
+```git
+$ git status
+On branch test_pull_request
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .gitignore
+        modified:   README.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        src/.gitignore
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+##### 上記`/root/.gitignore`および`/root/src/.gitignore`を配置して`git status`を実行した場合
+
+ユーザー独自の設定を記述した`/root/src/.gitignore`はgit管理対象とならず、かつユーザー依存のファイルが管理対象外となっている（**実現したい姿**）
+
+```git
+$ git status
+On branch test_pull_request
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .gitignore
+        modified:   README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+##### `/root/src/.gitignore`の`test*.txt`の設定をコメントアウトして`git status`を実行した場合
+
+ユーザー独自の設定を記述した`/root/src/.gitignore`はgit管理対象とならず、かつユーザー依存のファイルの設定が都度反映されていることが確認できる（**実現したい姿**）
+
+```git
+$ git status
+On branch test_pull_request
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .gitignore
+        modified:   README.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        src/test1.txt
+        src/test2.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
