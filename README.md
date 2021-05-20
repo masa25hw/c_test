@@ -128,6 +128,9 @@ jobs:
 
 **CMake**
 - [勝手に作るCMake入門 その1 基本的な使い方](https://kamino.hatenablog.com/entry/cmake_tutorial1)
+- [CMake HP](https://cmake.org/documentation/)
+- [CMakeの使い方〜覚書〜](https://qiita.com/tchofu/items/69dacfb93908525e5b0b)
+- [ごく簡単なcmakeの使い方](https://qiita.com/termoshtt/items/539541c180dfc40a1189)
 
 **make**
 - 実は make には色々種類がある. 主なものをあげると以下の通り
@@ -140,8 +143,12 @@ jobs:
 - [make Makefileで階層（サブディレクトリ）を走破しながら依存を解決してコンパイルする](https://giraffydev.hatenablog.com/entry/2016/10/04/101004)
 - [シンプルで応用の効くmakefileとその解説](http://urin.github.io/posts/2013/simple-makefile-for-clang)
 - [Makefileの書き方メモ](https://qiita.com/nullpo24/items/716bad137f1264b776f5)
+- [Autotools ( automake, autoconf, libtool ) 使い方まとめ](http://tamaobject.hatenablog.com/entry/2013/08/01/165119)
 ## CMake
-- CMakeは、C, C++, CUDA, Fortran, assemblerなどのプロジェクトのビルドをコンパイラに依存せず自動化するためのツール
+
+
+CMakeは、C, C++, CUDA, Fortran, assemblerなどのプロジェクトのビルドをコンパイラに依存せず自動化するためのツール
+
 - 本来、プログラミング言語の仕様は標準ライブラリとコンパイラの実装に依存するので、開発環境が違えば異なるソースコードを書く必要がある
 - しかし、上に挙げたような言語は、古くから標準化が行われているおかげで、同じソースコードを異なるコンパイラでビルドできる
 - 例えば、C++にはGCC, MinGW GCC, Clang, MSVCなど複数のコンパイラが存在しているが、標準ライブラリだけを使ったコードであれば、どのコンパイラでもビルドすることができる（もちろんコードを書くときに若干の工夫は必要）
@@ -160,6 +167,8 @@ jobs:
 
 という2ステップで、プロジェクトをビルドできるようになる。
 
+## Project構成
+
 ```
 project
 ├── Makefile.am
@@ -170,4 +179,109 @@ project
               ├── Makefile.am
               ├── lib_test.h
               └── lib_test.c
+```
+
+
+## `git ignore`設定
+### 実現したいこと
+- 個人用で作成したスクリプトやメモなど、個人の開発環境に依存したファイルを管理しないために、`.gitignore`を個別に配置するケースを想定
+- 個人依存のファイルを管理しない、かつ個々人で異なる`.gitignore`ファイル自体も管理対象としたくない
+
+### 実現手法
+下記構成でトライしたところ、上記ケースを作り出せたので、この方法を採用
+
+#### プロジェクト構成
+```
+root
+│  .gitignore
+│  CMakeLists.txt
+│  main.cpp
+│  README.md
+│
+├─.github
+│  └─workflows
+│          blank.yml
+│          test.yml
+│
+└─src
+    │  .gitignore
+    │  main.c
+    │  test1.txt <- 無視したい
+    │  test2.txt <- 無視したい
+    │
+    └─lib
+            lib_test.c
+            lib_test.h
+```
+
+#### 各階層に配置した`.gitignore`ファイル
+/root/.gitignore
+
+```git
+# gitiginore
+/**/.gitignore
+```
+
+/root/src/.gitignore
+
+```git
+# Personal settings
+test*.txt
+```
+
+#### テスト結果
+##### `/root/.gitignore`に`/**/.gitignore`を記述しなかった場合
+ユーザー独自の設定を記述した`/root/src/.gitignore`はgit管理対象となる
+
+```git
+$ git status
+On branch test_pull_request
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .gitignore
+        modified:   README.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        src/.gitignore
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+##### 上記`/root/.gitignore`および`/root/src/.gitignore`を配置して`git status`を実行した場合
+
+ユーザー独自の設定を記述した`/root/src/.gitignore`はgit管理対象とならず、かつユーザー依存のファイルが管理対象外となっている（**実現したい姿**）
+
+```git
+$ git status
+On branch test_pull_request
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .gitignore
+        modified:   README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+##### `/root/src/.gitignore`の`test*.txt`の設定をコメントアウトして`git status`を実行した場合
+
+ユーザー独自の設定を記述した`/root/src/.gitignore`はgit管理対象とならず、かつユーザー依存のファイルの設定が都度反映されていることが確認できる（**実現したい姿**）
+
+```git
+$ git status
+On branch test_pull_request
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .gitignore
+        modified:   README.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        src/test1.txt
+        src/test2.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
 ```
