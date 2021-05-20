@@ -128,6 +128,9 @@ jobs:
 
 **CMake**
 - [勝手に作るCMake入門 その1 基本的な使い方](https://kamino.hatenablog.com/entry/cmake_tutorial1)
+- [CMake HP](https://cmake.org/documentation/)
+- [CMakeの使い方〜覚書〜](https://qiita.com/tchofu/items/69dacfb93908525e5b0b)
+- [ごく簡単なcmakeの使い方](https://qiita.com/termoshtt/items/539541c180dfc40a1189)
 
 **make**
 - 実は make には色々種類がある. 主なものをあげると以下の通り
@@ -140,8 +143,12 @@ jobs:
 - [make Makefileで階層（サブディレクトリ）を走破しながら依存を解決してコンパイルする](https://giraffydev.hatenablog.com/entry/2016/10/04/101004)
 - [シンプルで応用の効くmakefileとその解説](http://urin.github.io/posts/2013/simple-makefile-for-clang)
 - [Makefileの書き方メモ](https://qiita.com/nullpo24/items/716bad137f1264b776f5)
+- [Autotools ( automake, autoconf, libtool ) 使い方まとめ](http://tamaobject.hatenablog.com/entry/2013/08/01/165119)
 ## CMake
-- CMakeは、C, C++, CUDA, Fortran, assemblerなどのプロジェクトのビルドをコンパイラに依存せず自動化するためのツール
+
+
+CMakeは、C, C++, CUDA, Fortran, assemblerなどのプロジェクトのビルドをコンパイラに依存せず自動化するためのツール
+
 - 本来、プログラミング言語の仕様は標準ライブラリとコンパイラの実装に依存するので、開発環境が違えば異なるソースコードを書く必要がある
 - しかし、上に挙げたような言語は、古くから標準化が行われているおかげで、同じソースコードを異なるコンパイラでビルドできる
 - 例えば、C++にはGCC, MinGW GCC, Clang, MSVCなど複数のコンパイラが存在しているが、標準ライブラリだけを使ったコードであれば、どのコンパイラでもビルドすることができる（もちろんコードを書くときに若干の工夫は必要）
@@ -159,6 +166,8 @@ jobs:
 1. 生成したプロジェクトファイルを使ってビルドする
 
 という2ステップで、プロジェクトをビルドできるようになる。
+
+## Project構成
 
 ```
 project
