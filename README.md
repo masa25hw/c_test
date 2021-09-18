@@ -1,6 +1,7 @@
 # c_test
 
 ![example branch parameter](https://github.com/masa25hw/c_test/actions/workflows/build.yml/badge.svg?main)
+![example event parameter](https://github.com/masa25hw/c_test/actions/workflows/build.yml/badge.svg?event=pull_request)
 
 ## 目的
 - [ ] Cソースファイルのビルド
@@ -15,7 +16,6 @@
     - GitHub Actionsの実行結果は何をもってOK/NGと判断させればよいのか（最後にexit 1で処理を抜けたらよいのか？）
 - [ ] CMakeの理解
     - [ありきたりなCMakeのプロジェクト作成 for C++](https://qiita.com/yumetodo/items/bd8f556ab56298f19ba8)
-    - 
 - [ ] gccの理解
 - [ ] 各ビルドシステムの学習
     - meson?
