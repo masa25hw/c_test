@@ -11,6 +11,7 @@ on:
   #   types:
   #     - opened
   #     - synchronize
+
 jobs:
   merge:
     runs-on: ubuntu-latest
