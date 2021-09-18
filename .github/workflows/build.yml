@@ -28,13 +28,13 @@ jobs:
           git config --global user.name "workflow user"
           git add .
           git commit -m 'modify README' && git push ${REPO} HEAD:${{github.event.pull_request.head.ref}} || true
-      - name: merge pull request
-        uses: actions/github-script@0.4.0
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            github.pulls.merge({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number
-            })
+#      - name: merge pull request
+#        uses: actions/github-script@0.4.0
+#        with:
+#          github-token: ${{secrets.GITHUB_TOKEN}}
+#          script: |
+#            github.pulls.merge({
+#              owner: context.repo.owner,
+#              repo: context.repo.repo,
+#              pull_number: context.payload.pull_request.number
+#            })
