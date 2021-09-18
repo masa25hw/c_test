@@ -74,4 +74,5 @@ A GitHub Action for running Parasoft C/C++test to ensure code quality and compli
 
 ## 参考
 - [Run Parasoft C/C++test](https://github.com/marketplace/actions/run-parasoft-c-c-test)
+- [ワークフローステータスバッジを追加する](https://docs.github.com/ja/actions/managing-workflow-runs/adding-a-workflow-status-badge)
 
