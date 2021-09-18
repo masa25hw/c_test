@@ -1,6 +1,6 @@
 # c_test
 
-![example branch parameter](https://github.com/masa25hw/c_test/actions/workflows/build.yml/badge.svg?main)
+[![example branch parameter](https://github.com/masa25hw/c_test/actions/workflows/build.yml/badge.svg?main)](https://github.com/masa25hw/c_test/actions/workflows/build.yml)
 ![example event parameter](https://github.com/masa25hw/c_test/actions/workflows/build.yml/badge.svg?event=pull_request)
 
 
